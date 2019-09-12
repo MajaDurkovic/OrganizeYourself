@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">OrganizeYourself</string>
+    <string name="email">email</string>
+    <string name="password">pass</string>
+    <string name="login">login</string>
+    <string name="or_register">or_register</string>
+    <string name="confirm_pass">cnfPass</string>
+    <string name="register">register</string>
+    <string name="or_login">or_log</string>
+</resources>

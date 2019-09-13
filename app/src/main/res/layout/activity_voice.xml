@@ -6,18 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".VoiceActivity">
 
-    <ListView
-        android:id="@+id/listViewTask"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatingActionButton"
@@ -32,5 +21,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:maxImageSize="36dp"
         app:srcCompat="@drawable/ic_keyboard_voice_black_24dp" />
+
+    <ListView
+        android:id="@+id/listVoice"
+        android:layout_width="395dp"
+        android:layout_height="498dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

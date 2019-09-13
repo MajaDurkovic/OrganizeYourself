@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intentVoice = new Intent(MainActivity.this, VoiceActivity.class);
-                startActivity(intentVoice;
+                startActivity(intentVoice);
             }
         });
 

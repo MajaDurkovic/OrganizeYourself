@@ -18,7 +18,7 @@ public class Login extends AppCompatActivity {
     Button mBtnLogin;
     TextView mTxtRegister;
 
-    DatabaseHelp db;
+    DatabaseHelper db;
 
 
     @Override
@@ -26,7 +26,7 @@ public class Login extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        db = new DatabaseHelp(this);
+        db = new DatabaseHelper(this);
 
         mTextemail = (EditText)findViewById(R.id.email);
         mTextpassword = (EditText)findViewById(R.id.password);

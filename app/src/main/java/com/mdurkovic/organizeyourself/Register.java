@@ -20,14 +20,14 @@ public class Register extends AppCompatActivity {
     private Button mBtnRegister;
     private TextView mTxtViewLogin;
 
-    DatabaseHelp db;
+    DatabaseHelper db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        db = new DatabaseHelp(this);
+        db = new DatabaseHelper(this);
 
         mTextemail = (EditText) findViewById(R.id.email);
         mTextpassword = (EditText) findViewById(R.id.password);

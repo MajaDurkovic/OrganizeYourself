@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".VoiceActivity"></activity>
+        <activity android:name=".NewTask"></activity>
+        <activity android:name=".VoiceActivity" />
         <activity android:name=".VideoActivity" />
         <activity android:name=".TaskActivity" />
         <activity

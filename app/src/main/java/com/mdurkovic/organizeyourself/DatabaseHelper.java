@@ -21,14 +21,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 1);
+        super(context, DATABASE_NAME, null, 2);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, email TEXT, password TEXT)");
 
-        db.execSQL("CREATE TABLE taskstable (ID INTEGER PRIMARY  KEY AUTOINCREMENT, TaskDescription TEXT, TaskDate LONG)");
+        db.execSQL("CREATE TABLE tasks (ID INTEGER PRIMARY  KEY AUTOINCREMENT, TaskDescription TEXT)");
     }
 
     @Override

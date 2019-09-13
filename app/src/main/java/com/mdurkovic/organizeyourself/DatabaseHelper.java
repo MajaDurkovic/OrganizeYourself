@@ -17,11 +17,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_TASK = "tasks";
     public static final String COL_T1 = "Task_Id";
     public static final String COL_T2 = "TaskDescription";
-    public static final String COL_T3 = "TaskDate";
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 2);
+        super(context, DATABASE_NAME, null, 3);
     }
 
     @Override

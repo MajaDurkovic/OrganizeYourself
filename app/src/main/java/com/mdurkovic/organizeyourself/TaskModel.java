@@ -1,11 +1,10 @@
 package com.mdurkovic.organizeyourself;
 
-import java.io.Serializable;
 
-public class TaskModel implements Serializable {
+public class TaskModel {
 
-    private int id;
-    private String description;
+    int id;
+    String description, date;
 
 
     public TaskModel(){
@@ -39,14 +38,14 @@ public class TaskModel implements Serializable {
         this.description= description;
     }
 
-//    za datum
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public void setName(String name) {
-//        this.name = name;
-//    }
+ //   za datum
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
 
     public String toString() {
         return this.description;

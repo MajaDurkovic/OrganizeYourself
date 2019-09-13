@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CalendarView;
 import android.widget.EditText;
@@ -11,12 +12,18 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+
+
 public class NewTask extends AppCompatActivity {
+
+    public static final String  TAG = "CalendarActivity";
+
 
     DatabaseHelper db;
     FloatingActionButton fabTask;
     EditText taskDescription;
     CalendarView calendarView;
+
 
 
     @Override
@@ -26,8 +33,22 @@ public class NewTask extends AppCompatActivity {
 
         db = new DatabaseHelper(this);
         taskDescription = findViewById(R.id.task_description);
-        calendarView = findViewById(R.id.calendarView);
+//        calendarView = findViewById(R.id.calendarView);
         fabTask = findViewById(R.id.task_done);
+
+
+
+//
+//        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+//            @Override
+//            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
+//                String date = i2 + "/" + (i1+1) + "/" + i;
+//
+//
+//                Log.d(TAG, "onSelectedDayChange: date:" + date);
+//            }
+//        });
+
 
 
         fabTask.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +56,7 @@ public class NewTask extends AppCompatActivity {
             public void onClick(View view) {
 
                 String newEntry = taskDescription.getText().toString();
+
                 if (taskDescription.length() != 0) {
                     AddData(newEntry);
                     taskDescription.setText("");
@@ -48,6 +70,8 @@ public class NewTask extends AppCompatActivity {
 
             }
         });
+
+
     }
 
     public void AddData(String newEntry) {

@@ -22,7 +22,6 @@ public class NewTask extends AppCompatActivity {
     DatabaseHelper db;
     FloatingActionButton fabTask;
     EditText taskDescription;
-    CalendarView calendarView;
 
 
 

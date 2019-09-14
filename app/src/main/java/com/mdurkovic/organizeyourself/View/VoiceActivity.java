@@ -1,14 +1,9 @@
 package com.mdurkovic.organizeyourself.View;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,22 +35,7 @@ public class VoiceActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice);
 
-        TextView voiceView = findViewById(R.id.textViewRecordingname);
-
         db = new DatabaseHelper(this);
-
-        final ArrayList<String> theList = new ArrayList<>();
-        final Cursor fileName = db.getVoiceContents();
-
-
-            while(fileName.moveToNext()){
-                theList.add(fileName.getString(1));
-                 TextView taskadapter = new TextView(this);
-                voiceView.setText((CharSequence) taskadapter);
-
-            }
-
-
 
         addVoice = findViewById(R.id.addVoice);
         addVoice.setOnClickListener(new View.OnClickListener() {
@@ -65,7 +45,6 @@ public class VoiceActivity extends AppCompatActivity {
                 startActivity(newIntent);
             }
         });
-
 
         initViews();
 
@@ -78,15 +57,12 @@ public class VoiceActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Recording List");
         toolbar.setTitleTextColor(getResources().getColor(android.R.color.black));
-        setSupportActionBar(toolbar);
-
-        /** enabling back button ***/
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         /** setting up recyclerView **/
         recyclerViewRecordings = (RecyclerView) findViewById(R.id.recyclerViewRecordings);
         recyclerViewRecordings.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         recyclerViewRecordings.setHasFixedSize(true);
+
 
 
     }
@@ -98,8 +74,8 @@ public class VoiceActivity extends AppCompatActivity {
         Log.d("Files", "Path: " + path);
         File directory = new File(path);
         File[] files = directory.listFiles();
-        Log.d("Files", "Size: "+ files.length);
-        if( files!=null ){
+        Log.d("Files", "Size: " + files.length);
+        if (files != null) {
 
             for (int i = 0; i < files.length; i++) {
 
@@ -107,34 +83,21 @@ public class VoiceActivity extends AppCompatActivity {
                 String fileName = files[i].getName();
                 String recordingUri = root.getAbsolutePath() + "/VoiceRecorderSimplifiedCoding/Audios/" + fileName;
 
-                Recording recording = new Recording(recordingUri,fileName,false);
+                Recording recording = new Recording(recordingUri, fileName, false);
                 recordingArraylist.add(recording);
             }
-
+            recyclerViewRecordings.setVisibility(View.VISIBLE);
             setAdaptertoRecyclerView();
 
+        } else {
+            recyclerViewRecordings.setVisibility(View.GONE);
         }
 
     }
 
     private void setAdaptertoRecyclerView() {
-        recordingAdapter = new RecordingAdapter(this,recordingArraylist);
+        recordingAdapter = new RecordingAdapter(this, recordingArraylist);
         recyclerViewRecordings.setAdapter(recordingAdapter);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-
-        switch (item.getItemId()){
-
-            case android.R.id.home:
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
-
     }
 
 }

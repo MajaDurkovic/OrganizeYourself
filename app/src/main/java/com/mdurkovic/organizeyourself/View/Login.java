@@ -66,8 +66,6 @@ public class Login extends AppCompatActivity {
         });
 
 
-
-// ograničenje na gumb za prijavu - ako nisu sva polja popunjena(!isEmpty()) ne može se kliknuti na njega
         mTextemail.addTextChangedListener(loginTextWatcher);
         mTextpassword.addTextChangedListener(loginTextWatcher);
     }

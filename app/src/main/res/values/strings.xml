@@ -7,4 +7,7 @@
     <string name="confirm_pass">cnfPass</string>
     <string name="register">register</string>
     <string name="or_login">or_log</string>
+    <string name="email1">Email</string>
+    <string name="pass">Password</string>
+    <string name="orRegister">or Register</string>
 </resources>

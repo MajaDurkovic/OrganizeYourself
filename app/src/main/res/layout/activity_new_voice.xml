@@ -4,8 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/memory"
     tools:context=".View.NewVoice">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:backgroundTint="@android:color/transparent"
+        android:minHeight="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:title="New Voice Recording" />
 
     <EditText
         android:id="@+id/VoiceFileName"
@@ -13,7 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:hint="Title"
+        android:hint="Enter Voice Recording Name "
+        android:singleLine="false"
         app:layout_constraintBottom_toTopOf="@+id/chronometerTimer"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
@@ -27,7 +40,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:textColor="@android:color/darker_gray"
+        android:textColor="#4E4949"
         android:textSize="60sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,26 +65,16 @@
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="@android:color/transparent"
         android:clickable="true"
         android:focusable="true"
         android:src="@drawable/ic_keyboard_voice_black_24dp"
+        app:backgroundTint="@android:color/transparent"
+        app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:maxImageSize="36dp" />
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:title="Voice Recording"/>
+        app:maxImageSize="48dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/play"
@@ -80,20 +83,30 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
         android:clickable="true"
+        app:backgroundTint="@android:color/transparent"
+        app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="36dp"
+        app:maxImageSize="48dp"
         app:srcCompat="@drawable/ic_play" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/stopSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="8dp"
         android:layout_marginBottom="32dp"
-        android:text="Save"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_done"
+        app:backgroundTint="@android:color/transparent"
+        app:elevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:maxImageSize="48dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

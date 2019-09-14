@@ -3,7 +3,6 @@ package com.mdurkovic.organizeyourself.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 
 import android.Manifest;
@@ -15,12 +14,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.speech.tts.Voice;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.EditText;
 import android.widget.SeekBar;
+import android.text.TextWatcher;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,7 +35,6 @@ import java.io.IOException;
 public class NewVoice extends AppCompatActivity {
 
     DatabaseHelper db;
-    EditText voiceTitle;
     EditText noviVoice;
 
 
@@ -48,10 +49,9 @@ public class NewVoice extends AppCompatActivity {
     private Chronometer chronometer;
     private FloatingActionButton btnRecord;
     private FloatingActionButton btnPlay;
-    private Button btnStop;
+    private FloatingActionButton btnSave;
 
     private SeekBar seekBar;
-    ConstraintLayout layoutRecord;
     //  private LinearLayout linearLayoutRecorder, linearLayoutPlay;
 
     private int RECORD_AUDIO_REQUEST_CODE = 123;
@@ -114,17 +114,26 @@ public class NewVoice extends AppCompatActivity {
         chronometer.setBase(SystemClock.elapsedRealtime());
         btnRecord = (FloatingActionButton) findViewById(R.id.record);
         btnPlay = (FloatingActionButton) findViewById(R.id.play);
-        btnStop = (Button) findViewById(R.id.stopSave);
+        btnSave = (FloatingActionButton) findViewById(R.id.stopSave);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
 
         db = new DatabaseHelper(this);
         noviVoice = findViewById(R.id.VoiceFileName);
-  //      voiceTitle = findViewById(R.id.VoiceFileName);
+
+        noviVoice.addTextChangedListener(voiceTextWatcher);
+
+        btnRecord.hide();
+        btnPlay.hide();
+        btnSave.hide();
+
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startRecording();
+                if (isPlaying && fileName == null) {
+                    stopRecording();
+                }
             }
         });
 
@@ -141,35 +150,37 @@ public class NewVoice extends AppCompatActivity {
             }
         });
 
-        btnStop.setOnClickListener(new View.OnClickListener() {
+        btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 stopRecording();
 
-
-                String newVoice = voiceTitle.getText().toString();
-                if (voiceTitle.length() != 0) {
-                    AddFileName(newVoice);
-                    voiceTitle.setText("");
-                }
             }
         });
 
     }
 
+    @Override
+    public void onBackPressed()
+    {
+        super.onBackPressed();
+        Intent backIntent = new Intent(NewVoice.this, VoiceActivity.class);
+        startActivity(backIntent);
+        finish();
+
+    }
+
 
     private void startRecording() {
-        //we use the MediaRecorder class to record
         mRecorder = new MediaRecorder();
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
-        /**In the lines below, we create a directory VoiceRecorderSimplifiedCoding/Audios in the phone storage
-         * and the audios are being stored in the Audios folder **/
         File root = android.os.Environment.getExternalStorageDirectory();
         File file = new File(root.getAbsolutePath() + "/VoiceRecorderSimplifiedCoding/Audios");
         if (!file.exists()) {
             file.mkdirs();
         }
+        btnRecord.hide();
 
         String naziv = noviVoice.getText().toString();
 
@@ -208,6 +219,7 @@ public class NewVoice extends AppCompatActivity {
 
 
     private void stopRecording() {
+        btnRecord.show();
 
         try {
             mRecorder.stop();
@@ -227,7 +239,9 @@ public class NewVoice extends AppCompatActivity {
     private void startPlaying() {
         mPlayer = new MediaPlayer();
         try {
-//fileName is global string. it contains the Uri to the recently recorded audio.
+
+
+//fileName globalni string, ima Uri na snimljeni voice
             mPlayer.setDataSource(fileName);
             mPlayer.prepare();
             mPlayer.start();
@@ -301,5 +315,36 @@ public class NewVoice extends AppCompatActivity {
         }
     }
 
+
+
+    public TextWatcher voiceTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            String voiceInput = noviVoice.getText().toString().trim();
+
+            if (voiceInput.isEmpty()) {
+                btnRecord.hide();
+                btnPlay.hide();
+                btnSave.hide();
+            } else {
+                btnRecord.show();
+                btnPlay.show();
+                btnSave.show();
+            }
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+
+        }
+    };
+
 }
+
 

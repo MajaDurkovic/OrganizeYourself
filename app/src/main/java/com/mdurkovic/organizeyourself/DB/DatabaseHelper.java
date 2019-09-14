@@ -1,4 +1,4 @@
-package com.mdurkovic.organizeyourself;
+package com.mdurkovic.organizeyourself.DB;
 
 
 import android.app.ActivityManager;
@@ -17,13 +17,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_TASK = "tasks";
     public static final String COL_T1 = "Task_Id";
     public static final String COL_T2 = "TaskDescription";
-//    public static final String TABLE_VOICE = "voice";
-//    public static final String VOICE_ID = "id_voice";
-//    public static final String VOICE_NAME = "FileName";
+    public static final String TABLE_VOICE = "voice";
+    public static final String VOICE_ID = "id_voice";
+    public static final String VOICE_NAME = "FileName";
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 3);
+        super(context, DATABASE_NAME, null, 4);
     }
 
     @Override
@@ -32,7 +32,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         db.execSQL("CREATE TABLE tasks (ID INTEGER PRIMARY  KEY AUTOINCREMENT, TaskDescription TEXT)");
 
-  //      db.execSQL("CREATE TABLE voice (ID INTEGER PRIMARY  KEY AUTOINCREMENT, FileName TEXT)");
+        db.execSQL("CREATE TABLE voice (ID INTEGER PRIMARY  KEY AUTOINCREMENT, FileName TEXT)");
 
     }
 
@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(" DROP TABLE IF EXISTS " + TABLE_NAME);
         db.execSQL(" DROP TABLE IF EXISTS " + TABLE_TASK);
-   //     db.execSQL(" DROP TABLE IF EXISTS " + TABLE_VOICE);
+        db.execSQL(" DROP TABLE IF EXISTS " + TABLE_VOICE);
         onCreate(db);
     }
 
@@ -93,34 +93,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return data;
     }
 
-}
 
 //pokusaj za dodat ime voice-a
 
-//    public boolean addFileName (String voiceTitle) {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        ContentValues voiceValues = new ContentValues();
-//        voiceValues.put(VOICE_NAME, voiceTitle);
-//
-//
-//        long result = db.insert("voice", null, voiceValues);
-//
-//        //if date as inserted incorrectly it will return -1
-//        if (result == -1) {
-//            return false;
-//        } else {
-//            return true;
-//        }
-//    }
-//
-//    public Cursor getVoiceContents() {
-//        SQLiteDatabase db = this.getWritableDatabase();
-//
-//        Cursor fileName = db.rawQuery(" SELECT * FROM " + TABLE_VOICE, null);
-//        return fileName;
-//
-//    }
+    public boolean addFileName(String voiceTitle) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues voiceValues = new ContentValues();
+        voiceValues.put(VOICE_NAME, voiceTitle);
+
+
+        long result = db.insert("voice", null, voiceValues);
+
+        //if date as inserted incorrectly it will return -1
+        if (result == -1) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    public Cursor getVoiceContents() {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        Cursor fileName = db.rawQuery(" SELECT * FROM " + TABLE_VOICE, null);
+        return fileName;
+
+    }
+}
 
 
 

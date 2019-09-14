@@ -14,20 +14,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".NewVoice"></activity>
+        <activity android:name=".View.NewVoice"></activity>
         <activity
             android:name=".PopUp"
             android:theme="@style/Theme.AppCompat.Dialog.Alert"></activity>
 
-        <activity android:name=".NewTask" />
-        <activity android:name=".VoiceActivity" />
-        <activity android:name=".VideoActivity" />
-        <activity android:name=".TaskActivity" />
+        <activity android:name=".View.NewTask" />
+        <activity android:name=".View.VoiceActivity" />
+        <activity android:name=".View.VideoActivity" />
+        <activity android:name=".View.TaskActivity" />
         <activity
-            android:name=".MainActivity"
+            android:name=".View.MainActivity"
             android:exported="true" />
-        <activity android:name=".Register" />
-        <activity android:name=".Login">
+        <activity android:name=".View.Register" />
+        <activity android:name=".View.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,7 +1,7 @@
-package com.mdurkovic.organizeyourself;
+package com.mdurkovic.organizeyourself.Adapter;
 
 import android.content.Context;
-import android.content.DialogInterface;
+import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.os.Build;
 import android.os.Handler;
@@ -14,10 +14,12 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mdurkovic.organizeyourself.DB.DatabaseHelper;
+import com.mdurkovic.organizeyourself.R;
+import com.mdurkovic.organizeyourself.Model.Recording;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 
 public class RecordingAdapter extends RecyclerView.Adapter<RecordingAdapter.ViewHolder>{
 
+    DatabaseHelper db;
     private ArrayList<Recording> recordingArrayList;
     private Context context;
     private MediaPlayer mPlayer;
@@ -36,21 +39,48 @@ public class RecordingAdapter extends RecyclerView.Adapter<RecordingAdapter.View
     public RecordingAdapter(Context context, ArrayList<Recording> recordingArrayList){
         this.context = context;
         this.recordingArrayList = recordingArrayList;
+        db = new DatabaseHelper(context);
+
+
+
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+
 
         View view = LayoutInflater.from(context).inflate(R.layout.voice_items,parent,false);
 
         return  new ViewHolder(view);
     }
 
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-        setUpData(holder,position);
+
+
+
+
+        Recording recording = recordingArrayList.get(position);
+        holder.textViewName.setText(recording.getFileName());
+
+
+        if( recording.isPlaying() ){
+            holder.btnPlay.setImageResource(R.drawable.ic_stop);
+            TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView);
+            holder.seekBar.setVisibility(View.VISIBLE);
+            holder.seekUpdation(holder);
+        }else{
+            holder.btnPlay.setImageResource(R.drawable.ic_play);
+            TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView);
+            holder.seekBar.setVisibility(View.GONE);
+        }
+
+
+        holder.manageSeekBar(holder);
     }
 
     @Override
@@ -76,29 +106,13 @@ public class RecordingAdapter extends RecyclerView.Adapter<RecordingAdapter.View
     }
 
 
+
+
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void setUpData(ViewHolder holder, int position) {
 
-        Recording recording = recordingArrayList.get(position);
-        holder.textViewName.setText(recording.getFileName());
-
-        if( recording.isPlaying() ){
-            holder.btnPlay.setImageResource(R.drawable.ic_stop);
-            TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView);
-            holder.seekBar.setVisibility(View.VISIBLE);
-            holder.seekUpdation(holder);
-        }else{
-            holder.btnPlay.setImageResource(R.drawable.ic_play);
-            TransitionManager.beginDelayedTransition((ViewGroup) holder.itemView);
-            holder.seekBar.setVisibility(View.GONE);
-        }
-
-
-        holder.manageSeekBar(holder);
-
-    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+
 
         FloatingActionButton btnPlay;
         FloatingActionButton btnDelete;

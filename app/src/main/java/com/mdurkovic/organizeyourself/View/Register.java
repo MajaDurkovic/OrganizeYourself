@@ -1,4 +1,4 @@
-package com.mdurkovic.organizeyourself;
+package com.mdurkovic.organizeyourself.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -11,6 +11,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mdurkovic.organizeyourself.DB.DatabaseHelper;
+import com.mdurkovic.organizeyourself.R;
 
 public class Register extends AppCompatActivity {
 

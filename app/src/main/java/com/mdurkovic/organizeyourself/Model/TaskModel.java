@@ -1,4 +1,4 @@
-package com.mdurkovic.organizeyourself;
+package com.mdurkovic.organizeyourself.Model;
 
 
 public class TaskModel {

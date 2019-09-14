@@ -1,12 +1,15 @@
-package com.mdurkovic.organizeyourself;
+package com.mdurkovic.organizeyourself.View;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.widget.ArrayAdapter;
+import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,11 +17,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mdurkovic.organizeyourself.DB.DatabaseHelper;
+import com.mdurkovic.organizeyourself.R;
+import com.mdurkovic.organizeyourself.Model.Recording;
+import com.mdurkovic.organizeyourself.Adapter.RecordingAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class VoiceActivity extends AppCompatActivity {
+
+    DatabaseHelper db;
 
     private Toolbar toolbar;
     private RecyclerView recyclerViewRecordings;
@@ -30,6 +39,23 @@ public class VoiceActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voice);
+
+        TextView voiceView = findViewById(R.id.textViewRecordingname);
+
+        db = new DatabaseHelper(this);
+
+        final ArrayList<String> theList = new ArrayList<>();
+        final Cursor fileName = db.getVoiceContents();
+
+
+            while(fileName.moveToNext()){
+                theList.add(fileName.getString(1));
+                 TextView taskadapter = new TextView(this);
+                voiceView.setText((CharSequence) taskadapter);
+
+            }
+
+
 
         addVoice = findViewById(R.id.addVoice);
         addVoice.setOnClickListener(new View.OnClickListener() {

@@ -1,4 +1,4 @@
-package com.mdurkovic.organizeyourself;
+package com.mdurkovic.organizeyourself.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +13,9 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mdurkovic.organizeyourself.DB.DatabaseHelper;
+import com.mdurkovic.organizeyourself.PopUp;
+import com.mdurkovic.organizeyourself.R;
 
 import java.util.ArrayList;
 

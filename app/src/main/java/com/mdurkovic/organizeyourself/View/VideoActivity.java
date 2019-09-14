@@ -1,8 +1,10 @@
-package com.mdurkovic.organizeyourself;
+package com.mdurkovic.organizeyourself.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.mdurkovic.organizeyourself.R;
 
 public class VideoActivity extends AppCompatActivity {
 

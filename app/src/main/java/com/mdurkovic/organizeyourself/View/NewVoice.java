@@ -1,4 +1,4 @@
-package com.mdurkovic.organizeyourself;
+package com.mdurkovic.organizeyourself.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -24,11 +24,17 @@ import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.mdurkovic.organizeyourself.DB.DatabaseHelper;
+import com.mdurkovic.organizeyourself.R;
 
 import java.io.File;
 import java.io.IOException;
 
 public class NewVoice extends AppCompatActivity {
+
+    DatabaseHelper db;
+    EditText voiceTitle;
+    EditText noviVoice;
 
 
     private MediaRecorder mRecorder;
@@ -46,9 +52,9 @@ public class NewVoice extends AppCompatActivity {
 
     private SeekBar seekBar;
     ConstraintLayout layoutRecord;
-  //  private LinearLayout linearLayoutRecorder, linearLayoutPlay;
+    //  private LinearLayout linearLayoutRecorder, linearLayoutPlay;
 
-    private int RECORD_AUDIO_REQUEST_CODE =123 ;
+    private int RECORD_AUDIO_REQUEST_CODE = 123;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void getPermissionToRecordAudio() {
@@ -59,7 +65,7 @@ public class NewVoice extends AppCompatActivity {
         // since the user can revoke permissions at any time through Settings
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED ) {
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
             // The permission is NOT already granted.
             // Check if the user has been asked about this permission already and denied
@@ -83,7 +89,7 @@ public class NewVoice extends AppCompatActivity {
             if (grantResults.length == 3 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED
                     && grantResults[1] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[2] == PackageManager.PERMISSION_GRANTED){
+                    && grantResults[2] == PackageManager.PERMISSION_GRANTED) {
 
                 //Toast.makeText(this, "Record Audio permission granted", Toast.LENGTH_SHORT).show();
 
@@ -100,17 +106,20 @@ public class NewVoice extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_voice);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             getPermissionToRecordAudio();
         }
 
-
-        chronometer =  (Chronometer) findViewById(R.id.chronometerTimer);
+        chronometer = (Chronometer) findViewById(R.id.chronometerTimer);
         chronometer.setBase(SystemClock.elapsedRealtime());
         btnRecord = (FloatingActionButton) findViewById(R.id.record);
         btnPlay = (FloatingActionButton) findViewById(R.id.play);
         btnStop = (Button) findViewById(R.id.stopSave);
         seekBar = (SeekBar) findViewById(R.id.seekBar);
+
+        db = new DatabaseHelper(this);
+        noviVoice = findViewById(R.id.VoiceFileName);
+  //      voiceTitle = findViewById(R.id.VoiceFileName);
 
         btnRecord.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,10 +131,10 @@ public class NewVoice extends AppCompatActivity {
         btnPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if( !isPlaying && fileName != null ){
+                if (!isPlaying && fileName != null) {
                     isPlaying = true;
                     startPlaying();
-                }else{
+                } else {
                     isPlaying = false;
                     stopPlaying();
                 }
@@ -136,11 +145,17 @@ public class NewVoice extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 stopRecording();
+
+
+                String newVoice = voiceTitle.getText().toString();
+                if (voiceTitle.length() != 0) {
+                    AddFileName(newVoice);
+                    voiceTitle.setText("");
+                }
             }
         });
 
     }
-
 
 
     private void startRecording() {
@@ -156,9 +171,11 @@ public class NewVoice extends AppCompatActivity {
             file.mkdirs();
         }
 
-        fileName =  root.getAbsolutePath() + "/VoiceRecorderSimplifiedCoding/Audios/" +
-                String.valueOf(System.currentTimeMillis() + ".mp3");
-        Log.d("filename",fileName);
+        String naziv = noviVoice.getText().toString();
+
+        fileName = root.getAbsolutePath() + "/VoiceRecorderSimplifiedCoding/Audios/" +
+                String.valueOf(naziv + ".mp3");
+        Log.d("filename", fileName);
         mRecorder.setOutputFile(fileName);
         mRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
 
@@ -178,9 +195,9 @@ public class NewVoice extends AppCompatActivity {
 
 
     private void stopPlaying() {
-        try{
+        try {
             mPlayer.release();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         mPlayer = null;
@@ -190,21 +207,21 @@ public class NewVoice extends AppCompatActivity {
     }
 
 
-            private void stopRecording() {
+    private void stopRecording() {
 
-                try{
-                    mRecorder.stop();
-                    mRecorder.release();
-                }catch (Exception e){
-                    e.printStackTrace();
-                }
-                mRecorder = null;
-                //starting the chronometer
-                chronometer.stop();
-                chronometer.setBase(SystemClock.elapsedRealtime());
-                //showing the play button
-                Toast.makeText(this, "Recording saved successfully.", Toast.LENGTH_SHORT).show();
-            }
+        try {
+            mRecorder.stop();
+            mRecorder.release();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        mRecorder = null;
+        //starting the chronometer
+        chronometer.stop();
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        //showing the play button
+        Toast.makeText(this, "Recording saved successfully.", Toast.LENGTH_SHORT).show();
+    }
 
 
     private void startPlaying() {
@@ -237,7 +254,7 @@ public class NewVoice extends AppCompatActivity {
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if( mPlayer!=null && fromUser ){
+                if (mPlayer != null && fromUser) {
                     //here the track's progress is being changed as per the progress bar
                     mPlayer.seekTo(progress);
                     //timer is being updated as per the progress of the seekbar
@@ -266,12 +283,22 @@ public class NewVoice extends AppCompatActivity {
     };
 
     private void seekUpdation() {
-        if(mPlayer != null){
-            int mCurrentPosition = mPlayer.getCurrentPosition() ;
+        if (mPlayer != null) {
+            int mCurrentPosition = mPlayer.getCurrentPosition();
             seekBar.setProgress(mCurrentPosition);
             lastProgress = mCurrentPosition;
         }
         mHandler.postDelayed(runnable, 100);
+    }
+
+
+    public void AddFileName(String newVoice) {
+        boolean insertData = db.addFileName(newVoice);
+        if (insertData == true) {
+            Toast.makeText(this, "Data Successfully Inserted!", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "Something went wrong :(.", Toast.LENGTH_LONG).show();
+        }
     }
 
 }

@@ -15,10 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_notes1_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".View.ShowNoteActivity"></activity>
         <activity android:name=".View.NewVoice"></activity>
-        <activity
-            android:name=".PopUp"
-            android:theme="@style/Theme.AppCompat.Dialog.Alert"></activity>
 
         <activity android:name=".View.NewTask" />
         <activity android:name=".View.VoiceActivity" />

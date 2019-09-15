@@ -11,6 +11,9 @@ import android.util.Log;
 
 import com.mdurkovic.organizeyourself.Model.TaskModel;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "organizator.db";
     public static final String TABLE_NAME = "registeruser";
@@ -27,16 +30,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 7);
+        super(context, DATABASE_NAME, null, 12);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, email TEXT, password TEXT)");
 
-        db.execSQL("CREATE TABLE tasks (ID INTEGER PRIMARY  KEY AUTOINCREMENT, TaskTitle TEXT, TaskDescription TEXT)");
+        db.execSQL("CREATE TABLE tasks (Task_Id INTEGER PRIMARY  KEY AUTOINCREMENT, TaskTitle TEXT, TaskDescription TEXT)");
 
-        db.execSQL("CREATE TABLE voice (ID INTEGER PRIMARY  KEY AUTOINCREMENT, FileName TEXT)");
+        db.execSQL("CREATE TABLE voice (id_voice INTEGER PRIMARY  KEY AUTOINCREMENT, FileName TEXT)");
 
     }
 
@@ -75,48 +78,76 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addData(String newEntryTitle, String newEntryDecription) {
+    public void addData(TaskModel tasks) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues taskValues = new ContentValues();
-        taskValues.put(COL_T2, newEntryTitle);
-        taskValues.put(COL_T3, newEntryDecription);
+        taskValues.put(COL_T2, tasks.getTitle());
+        taskValues.put(COL_T3, tasks.getDescription());
 
-
-        long result = db.insert("tasks", null, taskValues);
-
-        //if date as inserted incorrectly it will return -1
-        if (result == -1) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public Cursor getListContents() {
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery(" SELECT * FROM " + TABLE_TASK_TITLE, null);
-        return data;
-    }
-
-
-    public void deleteTask(TaskModel task) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_TASK_TITLE, COL_T1 + " = ?" + "= ?",
-                new String[] { String.valueOf(task.getTaskId()) });
+        db.insert(TABLE_TASK_TITLE, null, taskValues);
         db.close();
     }
 
-//public void deleteTask(int id, String title, String description){
-//        SQLiteDatabase db = this.getWritableDatabase();
-//    String query = "DELETE FROM " + TABLE_NAME + " WHERE "
-//            + COL_T1 + " = '" + id + "'" +
-//            " AND " + COL_T2 + " = '" + title + "='" + COL_T3 + description +"'";
-//    db.execSQL(query);
-//}
 
+    public List<TaskModel> getAllTasks(){
 
+        List<TaskModel> taskList = new ArrayList<>();
 
+        String query = "SELECT * FROM " + TABLE_TASK_TITLE;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if(cursor.moveToFirst()){
+            do {
+                TaskModel task = new TaskModel();
+                task.setId(cursor.getInt(cursor.getColumnIndex(COL_T1)));
+                task.setTitle(cursor.getString(cursor.getColumnIndex(COL_T2)));
+                task.setDescription(cursor.getString(cursor.getColumnIndex(COL_T3)));
+                taskList.add(task);
+            }while (cursor.moveToNext());
+        }
+        return taskList;
+    }
+
+    public int getTasksCount(){
+        String queryCount = "SELECT * FROM " + TABLE_TASK_TITLE;
+        SQLiteDatabase db =this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(queryCount,null);
+
+        int count = cursor.getCount();
+
+        cursor.close();
+
+        return  count;
+    }
+
+    public void createDefaultTasks() {
+        int count = this.getTasksCount();
+        if (count == 0) {
+            TaskModel task1 = new TaskModel("naslov", "opis");
+            TaskModel task2 = new TaskModel("naslov2", "opis2");
+            this.addData(task1);
+            this.addData(task2);
+        }
+    }
+
+    public void DeleteTask(TaskModel task){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TASK_TITLE, COL_T1 + " = ?", new String[]{String.valueOf(task.getId())});
+        db.close();
+    }
+
+    public int updateTask(TaskModel task){
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues taskValues = new ContentValues();
+        taskValues.put(COL_T2, task.getTitle());
+        taskValues.put(COL_T3, task.getDescription());
+
+        //updating row
+        return db.update(TABLE_TASK_TITLE, taskValues, COL_T1 + " = ?", new String[]{ String.valueOf(task.getId())});
+    }
 
 
 //Attempt 1. dodat ime voice-a
@@ -146,6 +177,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 }
+
 
 
 

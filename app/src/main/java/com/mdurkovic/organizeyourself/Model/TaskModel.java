@@ -5,52 +5,51 @@ import java.io.Serializable;
 public class TaskModel implements Serializable {
 
     int id;
-    String description, title;
+    String title;
+    String description;
 
 
-    public TaskModel(){
+    public TaskModel() {
 
     }
+
     public TaskModel(int id, String title, String description) {
         this.id = id;
-        this.description = description;
         this.title = title;
+        this.description = description;
     }
 
     public TaskModel(String title, String description) {
-        this.description = description;
         this.title = title;
-    }
-
-    public  TaskModel(String description){
         this.description = description;
     }
 
-
-
-    public int getTaskId() {
+    public int getId() {
         return id;
     }
 
-    public void setTaskId(int id) {
-        this.id = id;
+    public String getTitle() {
+        return title;
     }
-
-    public String getTitle(){ return title; }
-
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description= description;
+    public void setId(int id) {
+        this.id = id;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
     @Override
     public String toString() {
         return this.title;
     }
-
 }

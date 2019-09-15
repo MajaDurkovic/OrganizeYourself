@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/memory"
+    tools:context=".View.ShowNoteActivity">
+
+    <TextView
+        android:id="@+id/text_titleShow"
+        android:layout_width="375dp"
+        android:layout_height="66dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="53dp"
+        android:text="TextView"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/text_descriptionShow"
+        android:layout_width="375dp"
+        android:layout_height="471dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:text="TextView"
+        android:textColorHighlight="#00000000"
+        android:textColorLink="@android:color/background_dark"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_titleShow" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

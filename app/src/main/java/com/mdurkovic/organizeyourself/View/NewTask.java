@@ -12,16 +12,23 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.mdurkovic.organizeyourself.DB.DatabaseHelper;
 import com.mdurkovic.organizeyourself.R;
 
+import com.mdurkovic.organizeyourself.Model.TaskModel;
 
 public class NewTask extends AppCompatActivity {
 
     public static final String TAG = "CalendarActivity";
 
+    TaskModel task;
+    private static final int MODE_CREATE = 1;
+    private static final int MODE_EDIT = 2;
 
-    DatabaseHelper db;
+    private int mode;
+    private EditText taskTitle;
+    private EditText taskDescription;
     FloatingActionButton fabTask;
-    EditText taskTitle;
-    EditText taskDescription;
+
+
+    private boolean needRefresh;
 
 
     @Override
@@ -29,43 +36,65 @@ public class NewTask extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.new_task);
 
-        db = new DatabaseHelper(this);
+        this.fabTask = this.findViewById(R.id.task_done);
+        this.taskTitle = this.findViewById(R.id.task_title);
+        this.taskDescription = this.findViewById(R.id.task_description);
 
-        fabTask = findViewById(R.id.task_done);
-        taskTitle = findViewById(R.id.task_title);
-        taskDescription = findViewById(R.id.task_description);
+        Intent intent = this.getIntent();
+        this.task = (TaskModel) intent.getSerializableExtra("task");
+        if (task == null) {
+            this.mode = MODE_CREATE;
+        } else {
+            this.mode = MODE_EDIT;
+            this.taskTitle.setText(task.getTitle());
+            this.taskDescription.setText(task.getDescription());
+        }
+    }
 
 
-        fabTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+    public void buttonSaveClicked(View view){
+        DatabaseHelper db = new DatabaseHelper(this);
 
-                String newEntryTitle = taskTitle.getText().toString();
-                String newEntryDecription = taskDescription.getText().toString();
+        String title = this.taskTitle.getText().toString();
+        String description = this.taskDescription.getText().toString();
 
-                if (taskTitle.length() != 0 && taskDescription.length() != 0) {
-                    AddData(newEntryTitle, newEntryDecription);
-                    taskTitle.setText("");
-                    taskDescription.setText("");
-                    Intent newIntent = new Intent(NewTask.this, TaskActivity.class);
-                    startActivity(newIntent);
-                } else {
-                    Toast.makeText(NewTask.this, "You must put something in the text field!", Toast.LENGTH_LONG).show();
-                }
+        if(title.equals("") || description.equals("")) {
+            Toast.makeText(getApplicationContext(),
+                    "Please fill title and description!", Toast.LENGTH_LONG).show();
+            return;
+        }
 
-            }
-        });
+        if(mode==MODE_EDIT ) {
+            this.task.setTitle(title);
+            this.task.setDescription(description);
+            db.updateTask(task);
+        } else{
+            this.task= new TaskModel(title,description);
+            db.addData(task);
+        }
 
+
+        this.needRefresh = true;
+
+        // Back to MainActivity.
+        this.onBackPressed();
 
     }
 
-    public void AddData(String newEntryTitle, String newEntryDecription) {
-        boolean insertData = db.addData(newEntryTitle, newEntryDecription);
-        if (insertData == true) {
-            Toast.makeText(this, "Data Successfully Inserted!", Toast.LENGTH_LONG).show();
-        } else {
-            Toast.makeText(this, "Something went wrong :(.", Toast.LENGTH_LONG).show();
-        }
+    // When completed this Activity,
+    // Send feedback to the Activity called it.
+    @Override
+    public void finish() {
+
+        // Create Intent
+        Intent data = new Intent();
+
+        // Request MainActivity refresh its ListView (or not).
+        data.putExtra("needRefresh", needRefresh);
+
+        // Set Result
+        this.setResult(TaskActivity.RESULT_OK, data);
+        super.finish();
     }
 
 }

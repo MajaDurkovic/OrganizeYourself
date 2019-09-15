@@ -50,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="32dp"
+        android:onClick="buttonSaveClicked"
         android:src="@drawable/ic_done"
         app:backgroundTint="@android:color/transparent"
         app:elevation="0dp"

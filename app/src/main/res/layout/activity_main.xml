@@ -12,52 +12,56 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
         android:backgroundTint="@android:color/transparent"
+        android:minHeight="?attr/actionBarSize"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:title="ORGANIZE YOURSELF"/>
+        app:title="ORGANIZE YOURSELF" />
 
     <Button
         android:id="@+id/btnTask"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="8dp"
         android:text="Tasks"
+        android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
+
+    <Button
+        android:id="@+id/btnVoice"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="70dp"
+        android:text="Voice Reminder"
+        android:textSize="40sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/btnVideo"
+        style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:text="Video Reminder"
+        android:text="Picture Memo"
+        android:textSize="40sp"
         app:layout_constraintBottom_toTopOf="@+id/btnVoice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnTask" />
-
-    <Button
-        android:id="@+id/btnVoice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="56dp"
-        android:text="Voice Reminder"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnTask" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

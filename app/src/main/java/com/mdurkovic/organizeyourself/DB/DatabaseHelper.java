@@ -7,6 +7,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
+import com.mdurkovic.organizeyourself.Model.TaskModel;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "organizator.db";
@@ -14,23 +17,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_1 = "ID";
     public static final String COL_2 = "email";
     public static final String COL_3 = "password";
-    public static final String TABLE_TASK = "tasks";
+    public static final String TABLE_TASK_TITLE = "tasks";
     public static final String COL_T1 = "Task_Id";
-    public static final String COL_T2 = "TaskDescription";
+    public static final String COL_T2 = "TaskTitle";
+    public static final String COL_T3 = "TaskDescription";
     public static final String TABLE_VOICE = "voice";
     public static final String VOICE_ID = "id_voice";
     public static final String VOICE_NAME = "FileName";
 
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, 4);
+        super(context, DATABASE_NAME, null, 7);
     }
 
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE registeruser (ID INTEGER PRIMARY  KEY AUTOINCREMENT, email TEXT, password TEXT)");
 
-        db.execSQL("CREATE TABLE tasks (ID INTEGER PRIMARY  KEY AUTOINCREMENT, TaskDescription TEXT)");
+        db.execSQL("CREATE TABLE tasks (ID INTEGER PRIMARY  KEY AUTOINCREMENT, TaskTitle TEXT, TaskDescription TEXT)");
 
         db.execSQL("CREATE TABLE voice (ID INTEGER PRIMARY  KEY AUTOINCREMENT, FileName TEXT)");
 
@@ -39,7 +43,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         db.execSQL(" DROP TABLE IF EXISTS " + TABLE_NAME);
-        db.execSQL(" DROP TABLE IF EXISTS " + TABLE_TASK);
+        db.execSQL(" DROP TABLE IF EXISTS " + TABLE_TASK_TITLE);
         db.execSQL(" DROP TABLE IF EXISTS " + TABLE_VOICE);
         onCreate(db);
     }
@@ -71,10 +75,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean addData(String newEntry) {
+    public boolean addData(String newEntryTitle, String newEntryDecription) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues taskValues = new ContentValues();
-        taskValues.put(COL_T2, newEntry);
+        taskValues.put(COL_T2, newEntryTitle);
+        taskValues.put(COL_T3, newEntryDecription);
 
 
         long result = db.insert("tasks", null, taskValues);
@@ -89,12 +94,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor getListContents() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor data = db.rawQuery(" SELECT * FROM " + TABLE_TASK, null);
+        Cursor data = db.rawQuery(" SELECT * FROM " + TABLE_TASK_TITLE, null);
         return data;
     }
 
 
-//pokusaj za dodat ime voice-a
+    public void deleteTask(TaskModel task) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_TASK_TITLE, COL_T1 + " = ?" + "= ?",
+                new String[] { String.valueOf(task.getTaskId()) });
+        db.close();
+    }
+
+//public void deleteTask(int id, String title, String description){
+//        SQLiteDatabase db = this.getWritableDatabase();
+//    String query = "DELETE FROM " + TABLE_NAME + " WHERE "
+//            + COL_T1 + " = '" + id + "'" +
+//            " AND " + COL_T2 + " = '" + title + "='" + COL_T3 + description +"'";
+//    db.execSQL(query);
+//}
+
+
+
+
+
+//Attempt 1. dodat ime voice-a
 
     public boolean addFileName(String voiceTitle) {
         SQLiteDatabase db = this.getWritableDatabase();

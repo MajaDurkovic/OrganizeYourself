@@ -71,15 +71,15 @@ public class RecordingAdapter extends RecyclerView.Adapter<RecordingAdapter.View
         return recordingArrayList.size();
     }
 
-    public void removeAt(int position) {
-        recordingArrayList.remove(position);
-        notifyItemRemoved(position);
-        notifyItemRangeChanged(position, recordingArrayList.size());
-
-        String uri = recordingArrayList.get(position).getUri();
-        File file = new File(uri);
-        file.delete();
-    }
+//    public void removeAt(int position) {
+//        recordingArrayList.remove(position);
+//        notifyItemRemoved(position);
+//        notifyItemRangeChanged(position, recordingArrayList.size());
+//
+//        String uri = recordingArrayList.get(position).getUri();
+//        File file = new File(uri);
+//        file.delete();
+//    }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 
@@ -224,6 +224,16 @@ public class RecordingAdapter extends RecyclerView.Adapter<RecordingAdapter.View
             });
         }
 
+    }
+
+    public void removeAt(int position) {
+        recordingArrayList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, recordingArrayList.size());
+
+        String uri = recordingArrayList.get(position).getUri();
+        File file = new File(uri);
+        file.delete();
     }
 
 }

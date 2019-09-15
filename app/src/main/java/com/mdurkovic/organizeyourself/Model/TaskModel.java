@@ -1,18 +1,25 @@
 package com.mdurkovic.organizeyourself.Model;
 
+import java.io.Serializable;
 
-public class TaskModel {
+public class TaskModel implements Serializable {
 
     int id;
-    String description, date;
+    String description, title;
 
 
     public TaskModel(){
 
     }
-    public TaskModel(int id, String description) {
+    public TaskModel(int id, String title, String description) {
         this.id = id;
         this.description = description;
+        this.title = title;
+    }
+
+    public TaskModel(String title, String description) {
+        this.description = description;
+        this.title = title;
     }
 
     public  TaskModel(String description){
@@ -21,13 +28,15 @@ public class TaskModel {
 
 
 
-    public int getId() {
+    public int getTaskId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setTaskId(int id) {
         this.id = id;
     }
+
+    public String getTitle(){ return title; }
 
 
     public String getDescription() {
@@ -38,17 +47,10 @@ public class TaskModel {
         this.description= description;
     }
 
- //   za datum
-    public String getDate() {
-        return date;
-    }
 
-    public void setDate(String date) {
-        this.date = date;
-    }
-
+    @Override
     public String toString() {
-        return this.description;
+        return this.title;
     }
 
 }

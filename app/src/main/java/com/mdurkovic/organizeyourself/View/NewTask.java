@@ -15,13 +15,13 @@ import com.mdurkovic.organizeyourself.R;
 
 public class NewTask extends AppCompatActivity {
 
-    public static final String  TAG = "CalendarActivity";
+    public static final String TAG = "CalendarActivity";
 
 
     DatabaseHelper db;
     FloatingActionButton fabTask;
+    EditText taskTitle;
     EditText taskDescription;
-
 
 
     @Override
@@ -30,41 +30,28 @@ public class NewTask extends AppCompatActivity {
         setContentView(R.layout.new_task);
 
         db = new DatabaseHelper(this);
-        taskDescription = findViewById(R.id.task_description);
-//        calendarView = findViewById(R.id.calendarView);
+
         fabTask = findViewById(R.id.task_done);
-
-
-
-//
-//        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
-//            @Override
-//            public void onSelectedDayChange(CalendarView calendarView, int i, int i1, int i2) {
-//                String date = i2 + "/" + (i1+1) + "/" + i;
-//
-//
-//                Log.d(TAG, "onSelectedDayChange: date:" + date);
-//            }
-//        });
-
+        taskTitle = findViewById(R.id.task_title);
+        taskDescription = findViewById(R.id.task_description);
 
 
         fabTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                String newEntry = taskDescription.getText().toString();
+                String newEntryTitle = taskTitle.getText().toString();
+                String newEntryDecription = taskDescription.getText().toString();
 
-                if (taskDescription.length() != 0) {
-                    AddData(newEntry);
+                if (taskTitle.length() != 0 && taskDescription.length() != 0) {
+                    AddData(newEntryTitle, newEntryDecription);
+                    taskTitle.setText("");
                     taskDescription.setText("");
+                    Intent newIntent = new Intent(NewTask.this, TaskActivity.class);
+                    startActivity(newIntent);
                 } else {
                     Toast.makeText(NewTask.this, "You must put something in the text field!", Toast.LENGTH_LONG).show();
                 }
-
-
-                Intent newIntent = new Intent(NewTask.this, TaskActivity.class);
-                startActivity(newIntent);
 
             }
         });
@@ -72,13 +59,14 @@ public class NewTask extends AppCompatActivity {
 
     }
 
-    public void AddData(String newEntry) {
-        boolean insertData = db.addData(newEntry);
+    public void AddData(String newEntryTitle, String newEntryDecription) {
+        boolean insertData = db.addData(newEntryTitle, newEntryDecription);
         if (insertData == true) {
             Toast.makeText(this, "Data Successfully Inserted!", Toast.LENGTH_LONG).show();
         } else {
             Toast.makeText(this, "Something went wrong :(.", Toast.LENGTH_LONG).show();
         }
     }
+
 }
 
